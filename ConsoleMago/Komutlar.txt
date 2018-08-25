@@ -1,0 +1,162 @@
+ 
+Sadece Deðeri Kontrol Etmek
+
+			 firebase.database().ref().child("kullanicilar").orderByChild("kadi").equalTo($(this).val()).once("value",snapshot => {
+				const userData = snapshot.val();
+				if (userData){
+								// Kulalnýcý VAr  
+				}
+				else
+				{
+						//Kullancýý Yok
+				}
+				
+				
+			});
+
+
+			Tümünü Gözden Geçirir
+
+			   firebase.database().ref('kullanicilar').on('child_added', snap => {
+				if(snap.val().kadi == $(this).val()) {
+				 
+				 var
+				}
+				else{
+				yok
+				}
+			});
+			
+			
+			
+			
+			
+			
+			
+			// Kayýt Yapma
+			
+			 var islem2 = firebase.auth().createUserWithEmailAndPassword(email_kayit, sifre_kayit).then(function(firebaseUser) {
+						   console.log("Giriþ Baþarýlý"); // Giriþ Ýþlemi Gerçekleþti Local Storage
+						   console.log(firebaseUser.user.uid);
+							 $("#durumyazi").html("Yönelndiriliyorsunuz ....");
+							 
+							 
+							 
+						   
+									localStorage.removeItem('userUid');
+									localStorage.setItem('userUid', firebaseUser.user.uid)
+									
+									var kullanici_ekle = {uid:firebaseUser.user.uid, timestamp: new Date().toString(),adsoyad:adsoyad_kayit,email:email_kayit,kadi:kadi_kayit,sifre:sifre_kayit};
+									  var ref = firebase.database().ref().child('kullanicilar');
+									  var messageRef = ref.push(kullanici_ekle);
+									
+									window.location.href="portal.html";
+									
+						   
+						   })
+					   .catch(function(error) {
+						
+						
+						
+						
+					  // Handle Errors here.
+					  var errorCode = error.code;
+					  var errorMessage = error.message;
+					  if (errorCode === 'auth/wrong-password') {
+					   
+					   setTimeout(function(){ $("#durumyazi").html(" Hatalý Þifre Ve Email Adresi <button class='refresh_buton' onclick='location.reload();'>Tekrar Dene</button>"); }, 2000);
+					   
+					   
+					   
+					  } else if(errorCode === 'auth/invalid-email'){
+					  setTimeout(function(){ $("#durumyazi").html("Email Adresi Yanlýþ Girildi <button class='refresh_buton' onclick='location.reload();'>Tekrar Dene</button>"); }, 2000);
+						 
+					  }
+					  else if(errorCode === 'auth/email-already-in-use'){
+						
+						setTimeout(function(){ $("#durumyazi").html("Bu Email Adresine Kayýtlý Hesap Bulunmaktadýr. <button class='refresh_buton' onclick='location.reload();'>Tekrar Dene</button>"); }, 3000);
+					  }
+					  
+					  console.log(error);
+					  
+					  
+					  
+					  
+					  
+					});
+					
+					
+					
+// Giriþ Yapma
+
+					var islem = firebase.auth().signInWithEmailAndPassword(kadi, sifre).then(function(firebaseUser) {
+									   console.log("Giriþ Baþarýlý"); // Giriþ Ýþlemi Gerçekleþti Local Storage
+									   console.log(firebaseUser.user.uid);
+									   
+									   
+									   if (localStorage.getItem("userUid") === null) {
+												localStorage.setItem('userUid', firebaseUser.user.uid)
+												}
+									   
+									   
+									   
+								   })
+									.catch(function(error) {
+									
+									
+									
+									
+								  // Handle Errors here.
+								  var errorCode = error.code;
+								  var errorMessage = error.message;
+								  if (errorCode === 'auth/wrong-password') {
+								   
+								   setTimeout(function(){ $("#durumyazi").html(" Hatalý Þifre Ve Email Adresi <button class='refresh_buton' onclick='location.reload();'>Tekrar Dene</button>");}, 2000);
+								   
+								   
+								  } else if(errorCode === 'auth/invalid-email'){
+									 setTimeout(function(){ $("#durumyazi").html("Email Adresi Yanlýþ Girildi <button class='refresh_buton' onclick='location.reload();'>Tekrar Dene</button>");
+								  }, 2000);
+									  }
+								  else if(errorCode === 'auth/user-not-found'){
+									 setTimeout(function(){ $("#durumyazi").html("Bu Email Adresine Kayýtlý Hesap Bulunmamaktadýr. <button class='refresh_buton' onclick='location.reload();'>Tekrar Dene</button>");
+							}, 2000);
+										  }
+								  
+								  console.log(error);
+								  
+								  
+								  
+								  
+								  
+								});
+								
+								
+								
+// Update etme
+
+								firebase.database().ref().child('kullanicilar').orderByChild("uid").equalTo(localStorage.getItem('userUid')).on("child_added", function(snapshot) {
+								var degerler = snapshot.val();
+								var id = snapshot.key;
+								 // console.log(degerler.uid + " Id is : " + id);
+								  
+								   snapshot.ref.update({lat:pos.lat,lng:pos.lng});
+								   window.location = "portal.html";
+								  
+								});
+								
+								
+								
+// Deðer Çekme
+
+
+firebase.database().ref().child('kullanicilar').orderByChild("uid").equalTo(localStorage.getItem('userUid')).on("child_added", function(snapshot) {
+			var degerler = snapshot.val();
+			var id = snapshot.key;
+			
+		
+			  
+			  $("#adres_yaz").text(degerler.adres_string);
+			  $("#profil_baslik").text(degerler.adsoyad);
+			  
+			});

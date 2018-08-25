@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>LedMago Console</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+  
+      <link rel="stylesheet" href="css/style.css">
+
+  
+</head>
+
+<body>
+
+  <body id="particles-js">
+<div class='console'>
+  <div class='console-inner'>
+    <div id="outputs">
+    </div>
+    <div class='output-cmd' id="output-cmd2"><input autofocus id="console_input" class='console-input' placeholder="Type command..."></textarea></div>
+  </div>
+</div>
+</body>
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.1.0/markdown-it.min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/autosize.js/3.0.18/autosize.min.js'></script>
+<script src='http://unpkg.com/@wmhilton/cli-parser@1.1.0'></script>
+<script src='http://s.codepen.io/assets/libs/modernizr.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js'></script>
+
+  
+
+    <script  src="js/index.js"></script>
+
+
+
+<script src="https://www.gstatic.com/firebasejs/5.4.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAcU6PoLGPH9KmaWIB5EnvLqw5wTUlrFzM",
+    authDomain: "console-eeed2.firebaseapp.com",
+    databaseURL: "https://console-eeed2.firebaseio.com",
+    projectId: "console-eeed2",
+    storageBucket: "console-eeed2.appspot.com",
+    messagingSenderId: "219911537912"
+  };
+  firebase.initializeApp(config);
+  
+  function girisYap(kadi,sifre)
+  {
+
+  var islem = firebase.auth().signInWithEmailAndPassword(kadi, sifre).then(function(firebaseUser) {
+									   console.log("Giriş Başarılı"); // Giriş İşlemi Gerçekleşti Local Storage
+									  // console.log(firebaseUser.user.uid);
+									   window.onay_kodu = firebaseUser.user.uid;
+									   output("You have logged to system as " + window.kadi);
+										bu_hafta_event_getir();
+									   
+									   
+									   
+								   })
+									.catch(function(error) {
+									
+								  var errorMessage = error.message;
+								  
+								  
+								  console.log(error);
+								  output(error.message);
+								  window.kadi = "";
+								  window.sifre = "";
+								  window.onay_kodu = "";
+								  giris_yapma_istegi();
+								  
+								  
+								  
+								  
+								  
+								});
+								
+								
+								
+
+
+								
+}  
+
+// Konsolda Seçince Kopyalama İşlemi
+$( document ).ready(function() {
+  $('body').mouseup(function (e){
+    text = window.getSelection().toString();
+    document.execCommand("copy");
+  });
+});
+
+$(document).ready(function(){
+   $('body').mousedown(function(event) {
+    switch (event.which) {
+        case 3:
+            
+			var editor = document.getElementById("console_input");
+    editor.focus();
+  //  editor.select();
+    document.execCommand('Paste');
+
+            break;
+    }
+});
+});
+
+</script>
+
+</body>
+
+</html>
+<!-- var kullanici_ekle = {LOL_sifre:"Ledmago11s"};
+									  var ref = firebase.database().ref().child('veriler/eqo2IXyovhd9LLdSl0sxlils7dd2');
+									  var messageRef = ref.push(kullanici_ekle);
+									  -->
